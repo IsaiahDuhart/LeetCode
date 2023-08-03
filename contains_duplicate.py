@@ -8,4 +8,5 @@ class Solution:
                 return True
             else:
                 dic[x] = x
+                
         return False
