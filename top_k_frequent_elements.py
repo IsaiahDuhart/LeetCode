@@ -32,6 +32,36 @@ class Solution:
                     if dict[x] < dict[ret[lowestFreq]]:
                         lowestFreq = idx
         return ret
+    
+#This is the efficient solution, it's 4 lines LOL
+
+# from collections import Counter
+# class Solution:
+#     def topKFrequent(self, nums: List[int], k: int) -> List[int]: 
+#         # O(1) time 
+#         if k == len(nums):
+#             return nums
+        
+#         # 1. build hash map : character and how often it appears
+#         # O(N) time
+#         count = Counter(nums)   
+#         # 2-3. build heap of top k frequent elements and
+#         # convert it into an output array
+#         # O(N log k) time
+#         return heapq.nlargest(k, count.keys(), key=count.get) 
+
+# Takeaways:
+    #1) I've used this structure: 
+        # dict = {}
+        # for x in nums:
+        #             if x in dict:
+        #                 dict[x] += 1
+        #             else:
+        #                 dict[x] = 1
+    # a lot to find the frequency of elements in a list, instead I can use the counter class and do this instead:
+        #count = Counter(arr)
+    #2) I learned about heaps from the solution article, heaps are the binary heaps we learned about in 3114, and I can use heapq in python to easily sort a frequency dictionary into a heap
+
 
             
 
