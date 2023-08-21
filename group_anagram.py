@@ -5,27 +5,25 @@ from ast import List
 #   If not big_dict has key little dict: Add key and val
 #   else: add index to vals
 #   Loop through vals of big_dict and create little list of vals and put it in big list of all word O(n) loops
-# Yay, linear solution!!!!
+#   Yay, linear solution!!!!
+#   No :( this doesn't work
+#C) Loop through list, alphabitizes words ("eats" -> "aest"), -- hopefully O(n) soln
+#   Now sort list in alphabetical order -- O(nlogn)
+#   Now anagram groups are adjacent, we just need to find the between groups where words sorted aplphabetically are not equal -- O(n) soln
+#   O(n + nlogn + n) = O(nlogn)!
+#   Uh oh, I won't know which words the rearranged words are supposed to represent
+#D) Use dictionary to store sorted words, with rearranged words as the keys and list of original words as the value -- O(n) soln (we just have to loop through list once then return values of dictionary)
 
 
 class Solution:
     def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
-        ret = [[]]
-        little_dict = {}
-        big_dict = {}
+        alphaStrs = {}
         for x in strs:
-            little_dict = self.findFreq(x)
-            if not little_dict in big_dict.values():
-                big_dict[len(big_dict)] = little_dict
-            if little_dict in big_dict.values():
-                ret[list(big_dict.values()).index(little_dict)].append(x)
-        return ret
-    
-    def findFreq(self, s: str) -> dict:
-        dict = {}
-        for x in s:
-            if x in dict:
-                dict[x] += 1
+            alpha = "".join(sorted(x))
+            if alpha in alphaStrs:
+                alphaStrs[alpha].append(x)
             else:
-                dict[x] = 1
-        return dict
+                alphaStrs[alpha] = [x]
+        return list(alphaStrs.values())
+    
+
