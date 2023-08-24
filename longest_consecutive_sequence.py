@@ -26,37 +26,50 @@ from ast import List
 #   Possible improvements:
 #   Only store the greatest and smallest numbers of the sequence in the list, then when a new element is added, you know which other list to update (only the key on the other side of the sequence)
 #   With this approach, only subtract the second element from the first to find the length of the sequence
+#
+#   This update reduced my memory usage by 10 mbs (Which was only a 19.9% reduction), but it increased my runtime by 40 ms (11% slowdown) :(
+#       This solution is very bad, which makes me sad. But im moving on, which makes me happy
 class Solution:
     def longestConsecutive(self, nums: List[int]) -> int:
         dict = {}
         largestSeq = 0
-        thisSeq = 0
+        smallestNum = 0
+        greatestNum = 0
         for x in nums:
             if x in dict:
                 continue
             if x-1 in dict and x + 1 in dict:
-                greatestNum = x + len(dict[x + 1])
-                smallestNum = x  - len(dict[x - 1])
-                dict[greatestNum] = dict[greatestNum] + dict[smallestNum]
+                greatestNum = x + dict[x + 1][1]
+                smallestNum = x - dict[x - 1][0]
+                dict[greatestNum] = [dict[smallestNum][0], dict[greatestNum][1]]
                 dict[smallestNum] = dict[greatestNum]
-                dict[smallestNum].append(x)
                 dict[x] = None
-                thisSeq = len(dict[smallestNum])
+                
             elif x - 1 in dict:
                 dict[x] = dict[x-1]
-                dict[x].append(x)
+                dict[x][1] = x
+                dict[dict[x][0]][1] = x
                 if len(dict[x]) >= 3:
                     dict[x - 1] = None
-                thisSeq = len(dict[x])
+                greatestNum = x
+                smallestNum = dict[x][0]
             elif x + 1 in dict:
-                dict[x] = dict[x+1]
-                dict[x].append(x)
+                dict[x] = dict[x + 1]
+                dict[x][0] = x
+                dict[dict[x][1]][0] = x
                 if len(dict[x]) >= 3:
                     dict[x + 1] = None
-                thisSeq = len(dict[x])
+                smallestNum = x
+                greatestNum = dict[x][1]
             else:
-                dict[x] = [x]
-                thisSeq = 1
-            if largestSeq < thisSeq:
-                largestSeq = thisSeq
+                dict[x] = [x, x]
+
+            if dict[smallestNum][1] >= 0:
+                thisSeq = dict[smallestNum][1] - dict[smallestNum][0] + 1
+                if largestSeq < thisSeq:
+                        largestSeq =  thisSeq
+            else:
+                thisSeq = -dict[smallestNum][1] + dict[smallestNum][0] + 1
+                if largestSeq < thisSeq:
+                    largestSeq = thisSeq
         return largestSeq
