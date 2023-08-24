@@ -35,11 +35,13 @@ class Solution:
             if x in dict:
                 continue
             if x-1 in dict and x + 1 in dict:
-                dict[x + 1] = dict[x + 1] + dict[x - 1]
-                dict[x - 1] = dict[x + 1]
-                dict[x - 1].append(x)
+                greatestNum = x + len(dict[x + 1])
+                smallestNum = x  - len(dict[x - 1])
+                dict[greatestNum] = dict[greatestNum] + dict[smallestNum]
+                dict[smallestNum] = dict[greatestNum]
+                dict[smallestNum].append(x)
                 dict[x] = None
-                thisSeq = len(dict[x - 1])
+                thisSeq = len(dict[smallestNum])
             elif x - 1 in dict:
                 dict[x] = dict[x-1]
                 dict[x].append(x)
@@ -54,7 +56,7 @@ class Solution:
                 thisSeq = len(dict[x])
             else:
                 dict[x] = [x]
+                thisSeq = 1
             if largestSeq < thisSeq:
                 largestSeq = thisSeq
-            print(dict)
         return largestSeq
