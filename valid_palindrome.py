@@ -88,7 +88,7 @@
 #I might be stupid, but removing a variable increased my memory?!
 #Might just be a sample issue ig
 
-#Big gains ig lmao
+#Big gains ig lmao :100:
 
 class Solution:
     def isPalindrome(self, s: str) -> bool:
